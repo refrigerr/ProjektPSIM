@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Usage histories</h1>
+
+<div id="usage_histories">
+  <% @usage_histories.each do |usage_history| %>
+    <%= render usage_history %>
+    <p>
+      <%= link_to "Show this usage history", usage_history %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New usage history", new_usage_history_path %>

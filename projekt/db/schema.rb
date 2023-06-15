@@ -10,7 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_12_152500) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_15_201349) do
+  create_table "cards", force: :cascade do |t|
+    t.boolean "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cards_histories", id: false, force: :cascade do |t|
+    t.integer "usage_history_id"
+    t.integer "card_id"
+    t.index ["card_id"], name: "index_cards_histories_on_card_id"
+    t.index ["usage_history_id"], name: "index_cards_histories_on_usage_history_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rooms_cards", id: false, force: :cascade do |t|
+    t.integer "room_id"
+    t.integer "card_id"
+    t.index ["card_id"], name: "index_rooms_cards_on_card_id"
+    t.index ["room_id"], name: "index_rooms_cards_on_room_id"
+  end
+
+  create_table "usage_histories", force: :cascade do |t|
+    t.datetime "when_used"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -21,6 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_12_152500) do
     t.datetime "updated_at", null: false
     t.string "first_name"
     t.string "last_name"
+    t.boolean "isAdmin"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

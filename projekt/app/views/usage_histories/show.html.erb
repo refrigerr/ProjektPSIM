@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @usage_history %>
+
+<div>
+  <%= link_to "Edit this usage history", edit_usage_history_path(@usage_history) %> |
+  <%= link_to "Back to usage histories", usage_histories_path %>
+
+  <%= button_to "Destroy this usage history", @usage_history, method: :delete %>
+</div>
