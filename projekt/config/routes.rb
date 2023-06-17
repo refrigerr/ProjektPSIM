@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   resources :usage_histories
   resources :rooms
+
   resources :cards
+  post '/cards/:card_id', to: 'cards#add_room', as: 'add_room'
+  get '/rooms/user_index' => 'rooms#user_index'
+
   devise_for :users
   devise_scope :user do  
    get '/users/sign_out' => 'devise/sessions#destroy'     

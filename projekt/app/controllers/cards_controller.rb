@@ -6,9 +6,38 @@ class CardsController < ApplicationController
     @cards = Card.all
   end
 
+  def add_room
+    @card = Card.find(params[:card_id])
+    @room_id = params[:room_id]
+    @room = Room.find_by(id: @room_id)
+
+    if @room.nil?
+      flash[:notfound] = "Nie znaleziono pokoju!"
+      return
+    end
+
+    if @card.rooms.exists?(@room.id)
+      flash[:alert] = "Pokój jest już przypisany do karty!"
+      redirect_to @card
+    else
+      if @card.rooms << @room
+        if @card.save
+          flash[:success] = "Pomyślnie przypisano pokój do karty!"
+        else
+          flash[:fail] = "Nastąpił problem przy przypisywaniu pokoju do karty"
+        end
+      else
+        flash[:notfound] = "Wybrany pokój nie istnieje!"
+      end
+
+      redirect_to @card
+    end
+  end
+
   # GET /cards/1 or /cards/1.json
   def show
     @card = Card.find(params[:id])
+    @rooms = Room.all
   end
 
   # GET /cards/new

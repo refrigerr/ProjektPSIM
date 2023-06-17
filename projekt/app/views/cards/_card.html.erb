@@ -1,3 +1,27 @@
+<% if flash[:success] %>
+  <div class="success">
+    <p style="color: green;"><%= flash[:success] %></p>
+  </div>
+<% end %>
+
+<% if flash[:alert] %>
+  <div class="alert">
+    <p style="color: yellow;"><%= flash[:alert] %></p>
+  </div>
+<% end %>
+
+<% if flash[:fail] %>
+  <div class="fail">
+    <p style="color: red;"><%= flash[:fail] %></p>
+  </div>
+<% end %>
+
+<% if flash[:notfound] %>
+  <div class="notfound">
+    <p style="color: red;"><%= flash[:notfound] %></p>
+  </div>
+<% end %>
+
 <div id="<%= dom_id card %>">
   <p>
     <strong>Status:</strong>

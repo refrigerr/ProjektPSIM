@@ -7,4 +7,19 @@
   <%= link_to "Back to rooms", rooms_path %>
 
   <%= button_to "Destroy this room", @room, method: :delete %>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Card_Id</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cards.each do |room| %>
+        <tr>
+          <td><%= card.id %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

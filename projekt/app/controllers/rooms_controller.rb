@@ -1,13 +1,20 @@
 class RoomsController < ApplicationController
-  before_action :set_room, only: %i[ show edit update destroy ]
+  # before_action :set_room, only: %i[ show edit update destroy ]
 
   # GET /rooms or /rooms.json
   def index
     @rooms = Room.all
   end
 
+  def user_index
+    @user = User.find(params[:user_id])
+    @rooms = @user.card.rooms
+  end
+
   # GET /rooms/1 or /rooms/1.json
   def show
+    @room = Room.find(params[:id])
+    @cards = @room.cards
   end
 
   # GET /rooms/new
@@ -23,14 +30,12 @@ class RoomsController < ApplicationController
   def create
     @room = Room.new(room_params)
 
-    respond_to do |format|
-      if @room.save
-        format.html { redirect_to room_url(@room), notice: "Room was successfully created." }
-        format.json { render :show, status: :created, location: @room }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @room.errors, status: :unprocessable_entity }
-      end
+    if @room.save
+      @room.card_id = params[:room][:card_id]  # Przypisanie card_id
+      @room.save
+      redirect_to @room
+    else
+      render :new
     end
   end
 

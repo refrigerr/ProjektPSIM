@@ -7,4 +7,27 @@
   <%= link_to "Back to cards", cards_path %>
 
   <%= button_to "Destroy this card", @card, method: :delete %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @card.rooms.each do |room| %>
+        <tr>
+          <td><%= room.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  Add new Room:
+  <%= form_with model: @room do |form| %>
+    <div class="field">
+      <%= form.select :room_id, options_for_select(@rooms.map { |room| [room.name, room.id] }, @room_id), prompt: "Select a Room" %>
+    </div>
+    <div class="actions">
+      <%= form.submit "Add Room" %>
+    </div>
+  <% end %>
 </div>
