@@ -5,9 +5,6 @@
 <div>
   <% if current_user.isAdmin? %>
     <%= link_to "Edit this card", edit_card_path(@card) %>
-  <% end %>
-  <%= link_to "Back to cards", cards_path %>
-  <% if current_user.isAdmin? %>
     <%= button_to "Destroy this card", @card, method: :delete %>
   <% end %>
   <table class="table">

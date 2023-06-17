@@ -3,20 +3,13 @@
 <h1>User Cards</h1>
 
 <div id="cards">
-  <% if current_user.isAdmin? %>
-    <% @cards.each do |card| %>
-      <%= render card %>
-      <p>
-        <%= link_to "Show this card", card %>
-      </p>
-    <% end %>
-  <% else %>
-    <%= render current_user.card %>
-      <p>
-        <%= link_to "Show this card", current_user.card  %>
-      </p>
+  <% @cards.each do |card| %>
+    <%= render card %>
+    <p>
+      <%= link_to "Show this card", card %>
+    </p>
   <% end %>
 </div>
-<% if current_user.isAdmin? %>
-  <%= link_to "New card", new_card_path %>
- <% end %>
+
+<%= link_to "New card", new_card_path %>
+

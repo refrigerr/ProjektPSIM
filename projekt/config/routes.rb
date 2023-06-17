@@ -3,10 +3,11 @@ Rails.application.routes.draw do
   resources :rooms
 
   resources :cards
+  post 'users/:user_id/cards/:card_id', to: 'cards#add_room'
   post '/cards/:card_id', to: 'cards#add_room', as: 'add_room'
   get '/rooms/user_index' => 'rooms#user_index'
 
-  devise_for :users
+  devise_for :users, :controllers => { registrations: 'users/registrations' }
   devise_scope :user do  
    get '/users/sign_out' => 'devise/sessions#destroy'     
   end
@@ -19,7 +20,7 @@ Rails.application.routes.draw do
       post 'unassign_room/:room_id', to: 'cards#unassign_room', as: 'unassign_room'
     end
   end
-  
+
   root 'pages#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
