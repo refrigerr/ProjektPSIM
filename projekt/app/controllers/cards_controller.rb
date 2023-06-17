@@ -89,6 +89,19 @@ class CardsController < ApplicationController
     end
   end
 
+  def unassign_room
+    @card = Card.find(params[:id])
+    @room = @card.rooms.find(params[:room_id])
+    @room.card_id = nil
+    # Remove the association from the card
+    @card.rooms.delete(@room)
+    if @room.save && @card.save
+      redirect_to @card, notice: 'Room unassigned successfully.'
+    else
+      redirect_to @card, notice: ':(.'
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_card

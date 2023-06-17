@@ -17,6 +17,7 @@
       <% @card.rooms.each do |room| %>
         <tr>
           <td><%= room.name %></td>
+          <td><%= button_to "Unassign Room", unassign_room_card_path(@card, room), method: :post %></td>
         </tr>
       <% end %>
     </tbody>

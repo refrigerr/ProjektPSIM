@@ -14,13 +14,9 @@
   <div>
     <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name %>
-    <div class="field">
-      <%= form.label :card_id, "Wybierz kartę" %>
-      <%= form.select :card_id, options_for_select(Card.all.map { |card| [card.id] }), prompt: "Wybierz kartę" %>
-    </div>
   </div>
 
   <div>
-    <%= button_to "Dodaj pokój", add_room_path(@card, @room), method: :post %>
+    <%= form.submit %>
   </div>
 <% end %>
