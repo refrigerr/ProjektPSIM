@@ -3,10 +3,13 @@
 <%= render partial: 'card', locals: { card: @card } %>
 
 <div>
-  <%= link_to "Edit this card", edit_card_path(@card) %> |
+  <% if current_user.isAdmin? %>
+    <%= link_to "Edit this card", edit_card_path(@card) %>
+  <% end %>
   <%= link_to "Back to cards", cards_path %>
-
-  <%= button_to "Destroy this card", @card, method: :delete %>
+  <% if current_user.isAdmin? %>
+    <%= button_to "Destroy this card", @card, method: :delete %>
+  <% end %>
   <table class="table">
     <thead>
       <tr>
@@ -17,18 +20,22 @@
       <% @card.rooms.each do |room| %>
         <tr>
           <td><%= room.name %></td>
-          <td><%= button_to "Unassign Room", unassign_room_card_path(@card, room), method: :post %></td>
+          <% if current_user.isAdmin? %>
+            <td><%= button_to "Unassign Room", unassign_room_card_path(@card, room), method: :post %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
   </table>
-  Add new Room:
-  <%= form_with model: @room do |form| %>
-    <div class="field">
-      <%= form.select :room_id, options_for_select(@rooms.map { |room| [room.name, room.id] }, @room_id), prompt: "Select a Room" %>
-    </div>
-    <div class="actions">
-      <%= form.submit "Add Room" %>
-    </div>
+  <% if current_user.isAdmin? %>
+    Add new Room:
+    <%= form_with model: @room do |form| %>
+      <div class="field">
+        <%= form.select :room_id, options_for_select(@rooms.map { |room| [room.name, room.id] }, @room_id), prompt: "Select a Room" %>
+      </div>
+      <div class="actions">
+        <%= form.submit "Add Room" %>
+      </div>
+    <% end %>
   <% end %>
 </div>
