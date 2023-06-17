@@ -5,4 +5,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one :card
+  after_create :create_card
+
+  def create_card
+    self.build_card(status: true)
+    self.card.save
+  end
+
 end

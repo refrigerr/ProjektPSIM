@@ -10,5 +10,6 @@
     </p>
   <% end %>
 </div>
-
-<%= link_to "Add new room", new_room_path %>
+<% if current_user.isAdmin %>
+  <%= link_to "Add new room", new_room_path %>
+<% end %>
