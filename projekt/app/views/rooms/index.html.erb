@@ -6,7 +6,7 @@
   <% @rooms.each do |room| %>
     <%= render room %>
     <p>
-      <%= link_to "Show this room", room %>
+      <%= button_to "Enter this room", room_path(room), method: :get %>
     </p>
   <% end %>
 </div>
