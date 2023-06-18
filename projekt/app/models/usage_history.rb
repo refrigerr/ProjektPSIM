@@ -1,3 +1,4 @@
 class UsageHistory < ApplicationRecord
-    has_and_belongs_to_many :cards, :join_table => :cards_histories
+    belongs_to :card
+    belongs_to :room
 end

@@ -4,6 +4,24 @@
 
 <div>
   <% if current_user.isAdmin? %>
+     </table>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Użytkownik</th>
+            <th scope="col">Kiedy otwarto</th>
+          </tr>
+          
+        </thead>
+        <tbody>
+          <% @room.usage_histories.each do |usage_history| %>
+            <tr>
+              <td><%= usage_history.card.user.email %></td>
+              <td><%= usage_history.created_at %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     <%= link_to "Edit this room", edit_room_path(@room) %>
     <br>
     <%= button_to "Destroy this room", @room, method: :delete %>

@@ -15,11 +15,13 @@ class RoomsController < ApplicationController
   def show
     begin
       @room = Room.find(params[:id])
-      @user = current_user
-      @card = current_user.card
+      user = current_user
+      card = current_user.card
       
-      if @user.isAdmin? || @user.card.rooms.exists?(@room.id)
-        # Admin logic goes here
+      if user.isAdmin? || (card.rooms.exists?(@room.id) && card.status?)
+        usage_history = UsageHistory.new(card: card, room: @room)
+        usage_history.save
+
       else
         flash[:unsuccesful] = 'You do not have access to this page.'
         redirect_to rooms_path

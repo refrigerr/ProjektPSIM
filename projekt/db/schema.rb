@@ -10,19 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_18_091718) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_18_110805) do
   create_table "cards", force: :cascade do |t|
     t.boolean "status"
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
-  end
-
-  create_table "cards_histories", id: false, force: :cascade do |t|
-    t.integer "usage_history_id"
-    t.integer "card_id"
-    t.index ["card_id"], name: "index_cards_histories_on_card_id"
-    t.index ["usage_history_id"], name: "index_cards_histories_on_usage_history_id"
+    t.index ["user_id"], name: "index_cards_on_user_id"
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -43,6 +37,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_18_091718) do
     t.datetime "when_used"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "card_id", null: false
+    t.integer "room_id", null: false
+    t.index ["card_id"], name: "index_usage_histories_on_card_id"
+    t.index ["room_id"], name: "index_usage_histories_on_room_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,8 +54,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_18_091718) do
     t.string "first_name"
     t.string "last_name"
     t.boolean "isAdmin"
+    t.integer "user_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "cards", "users"
+  add_foreign_key "usage_histories", "cards"
+  add_foreign_key "usage_histories", "rooms"
 end
