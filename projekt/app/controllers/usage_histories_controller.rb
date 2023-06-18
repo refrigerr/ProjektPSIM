@@ -14,7 +14,7 @@ class UsageHistoriesController < ApplicationController
   def show
     if @card.present? && @card.user == current_user
     else
-       redirect_to root_path, alert: "You don't have permission to access this card."
+       redirect_to root_path
     end
   end
 

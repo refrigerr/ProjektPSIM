@@ -38,7 +38,7 @@ class RoomsController < ApplicationController
   def new
     if current_user.isAdmin
     else
-      redirect_to root_path, alert: "You don't have permission to access this card."
+      redirect_to root_path
     end
     @room = Room.new
   end
@@ -47,7 +47,7 @@ class RoomsController < ApplicationController
   def edit
     if current_user.isAdmin
     else
-      redirect_to root_path, alert: "You don't have permission to access this card."
+      redirect_to root_path
     end
     @room = Room.find(params[:id])
   end

@@ -40,14 +40,14 @@ class CardsController < ApplicationController
     @card = Card.find_by_id(params[:id])
     @rooms = Room.all
     if @card.nil?
-        redirect_to root_path, alert: "You don't have permission to access this card."
+        redirect_to root_path
     else
         @rooms = Room.all
         if current_user.isAdmin
         else
             if @card.present? && @card.user == current_user
             else
-              redirect_to root_path, alert: "You don't have permission to access this card."
+              redirect_to root_path
             end
         end
     end
@@ -63,7 +63,7 @@ class CardsController < ApplicationController
     @card = Card.find(params[:id])
     if @card.present? && current_user.isAdmin
     else
-      redirect_to root_path, alert: "You don't have permission to access this card."
+      redirect_to root_path
     end
   end
 
