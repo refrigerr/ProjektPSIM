@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_one :card
+  has_one :card, dependent: :destroy
   after_create :create_card
 
   def create_card

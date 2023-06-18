@@ -36,6 +36,8 @@
         <li class="nav-item">
           <% if user_signed_in? %>
             <%= link_to "Logout", users_sign_out_path, :method => :delete, class: "nav-link active", "aria-current": "page" %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, class: "nav-link active", "aria-current": "page" %>
           <% end %>
         </li>
       </ul>

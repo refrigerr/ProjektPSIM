@@ -3,9 +3,11 @@
 <%= render @room %>
 
 <div>
-  <%= link_to "Edit this room", edit_room_path(@room) %> |
+  <% if current_user.isAdmin? %>
+    <%= link_to "Edit this room", edit_room_path(@room) %>
+    <br>
+    <%= button_to "Destroy this room", @room, method: :delete %>
+    <br>
+  <% end %>
   <%= link_to "Back to rooms", rooms_path %>
-
-  <%= button_to "Destroy this room", @room, method: :delete %>
-
 </div>
