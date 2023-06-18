@@ -1,5 +1,11 @@
 <p style="color: green"><%= notice %></p>
 
+<% if flash[:unsuccesful] %>
+  <div class="unsuccesful">
+    <span style="color: red;"><%= flash[:unsuccesful] %></span>
+  </div>
+<% end %>
+
 <h1>All rooms in our company</h1>
 
 <div id="rooms">

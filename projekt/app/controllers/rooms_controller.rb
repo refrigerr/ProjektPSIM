@@ -13,7 +13,22 @@ class RoomsController < ApplicationController
 
   # GET /rooms/1 or /rooms/1.json
   def show
-    @room = Room.find(params[:id])
+    begin
+      @room = Room.find(params[:id])
+      @user = current_user
+      @card = current_user.card
+      
+      if @user.isAdmin? || @user.card.rooms.exists?(@room.id)
+        # Admin logic goes here
+      else
+        flash[:unsuccesful] = 'You do not have access to this page.'
+        redirect_to rooms_path
+      end
+    rescue ActiveRecord::RecordNotFound
+      flash[:unsuccesful] = 'Not such room in database.'
+      redirect_to rooms_path
+    end
+    
   #  @cards = @room.cards
   end
 
