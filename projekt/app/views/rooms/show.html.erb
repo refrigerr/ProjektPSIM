@@ -4,9 +4,8 @@
 
 <div>
   <% if current_user.isAdmin? %>
-     </table>
-      <table class="table">
-        <thead>
+      <table class="table table-striped table-full-width">
+        <thead class="table-dark">
           <tr>
             <th scope="col">Użytkownik</th>
             <th scope="col">Kiedy otwarto</th>
@@ -14,18 +13,35 @@
           
         </thead>
         <tbody>
-          <% @room.usage_histories.each do |usage_history| %>
-            <tr>
-              <td><%= usage_history.card.user.email %></td>
-              <td><%= usage_history.created_at %></td>
-            </tr>
+          <% @room.usage_histories.each_with_index do |usage_history, index| %>
+              <% if index < 3 %>
+                <tr>
+                  <td><%= usage_history.card.user.email %></td>
+                  <td><%= usage_history.created_at %></td>
+                </tr>
+              <% else %>
+                <tr class="collapse" id="additional-rows">
+                  <td><%= usage_history.card.user.email %></td>
+                  <td><%= usage_history.created_at %></td>
+                </tr>
+              <% end %>
           <% end %>
         </tbody>
       </table>
-    <%= link_to "Edit this room", edit_room_path(@room) %>
-    <br>
-    <%= button_to "Destroy this room", @room, method: :delete %>
-    <br>
+      <% if @room.usage_histories.size > 3 %>
+        <div class="text-left">
+          <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#additional-rows" aria-expanded="false" aria-controls="additional-rows">
+            Show More/Less
+          </button>
+        </div>
+        <br>
+      <% end %>
+    <div class="btn-group">
+      <%= button_to "Edit this room", edit_room_path(@room), method: :get, class: "btn btn-primary rounded mr-2" %>
+      <%= button_to "Destroy this room", @room, method: :delete, class: "btn btn-danger" %>
+    </div>  
   <% end %>
-  <%= link_to "Back to rooms", rooms_path %>
+  <br>
+  <br>
+  <%= button_to "Back to rooms", rooms_path, method: :get, class: "btn btn-primary rounded mr-2" %>
 </div>

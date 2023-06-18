@@ -11,12 +11,12 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :status, style: "display: block" %>
-    <%= form.check_box :status %>
+  <div class="form-check">
+    <%= form.check_box :status, class: "form-check-input", id: "status-checkbox" %>
+    <%= form.label :status, "Status", class: "form-check-label ml-2", for: "status-checkbox" %>
   </div>
-
+  <br>
   <div>
-    <%= form.submit %>
+    <%= form.submit class: "btn btn-success rounded mr-2" %>
   </div>
 <% end %>

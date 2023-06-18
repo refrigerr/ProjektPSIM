@@ -24,9 +24,20 @@
 
 <div id="<%= dom_id card %>">
   <p>
+    <strong>First Name:</strong>
+    <%= card.user.first_name %>
+    <br>
+    <strong>Last Name:</strong>
+    <%= card.user.last_name %>
+    <br>
     <strong>Status:</strong>
-    <%= card.status %>
-    <strong>User:</strong>
+    <% if card.status %>
+      <span style="color: darkgreen;">Active</span>
+    <% else %>
+      <span style="color: red;">Disabled</span>
+    <% end %>
+    <br>
+    <strong>User e-mail:</strong>
     <%= card.user.email %>
   </p>
 

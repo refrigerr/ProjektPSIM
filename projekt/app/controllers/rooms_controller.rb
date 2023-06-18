@@ -36,11 +36,19 @@ class RoomsController < ApplicationController
 
   # GET /rooms/new
   def new
+    if current_user.isAdmin
+    else
+      redirect_to root_path, alert: "You don't have permission to access this card."
+    end
     @room = Room.new
   end
 
   # GET /rooms/1/edit
   def edit
+    if current_user.isAdmin
+    else
+      redirect_to root_path, alert: "You don't have permission to access this card."
+    end
     @room = Room.find(params[:id])
   end
 
@@ -74,6 +82,7 @@ class RoomsController < ApplicationController
   # DELETE /rooms/1 or /rooms/1.json
   def destroy
     @room = Room.find(params[:id])
+    @room.usage_histories.destroy_all
     @room.destroy
     respond_to do |format|
       format.html { redirect_to rooms_url, notice: "Room was successfully destroyed." }

@@ -4,12 +4,10 @@
 
 <div id="cards">
   <% @cards.each do |card| %>
-    <%= render card %>
     <p>
-      <%= link_to "Show this card", card %>
+      <%= render card %>
+      <%= button_to "Show this card", card, method: :get, class: "btn btn-primary rounded mr-2" %>
     </p>
+    <hr style="border-top: 1px solid black;">
   <% end %>
 </div>
-
-<%= link_to "New card", new_card_path %>
-

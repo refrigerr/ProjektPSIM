@@ -6,18 +6,23 @@
   </div>
 <% end %>
 
-<h1>All rooms in our company</h1>
+<div class="d-flex align-items-center justify-content-between">
+  <h1>All rooms in our company</h1>
+
+  <% if user_signed_in? %>
+    <% if current_user.isAdmin? %>
+      <%= button_to "Add new room", new_room_path, method: :get, class: "btn btn-success rounded mr-2" %>
+    <% end %>
+  <% end %>
+</div>
 
 <div id="rooms">
   <% @rooms.each do |room| %>
-    <%= render room %>
     <p>
-      <%= button_to "Enter this room", room_path(room), method: :get %>
+      <%= render room %>
+      <%= button_to "Enter this room", room_path(room), method: :get, class: "btn btn-primary rounded mr-2" %>
     </p>
+    <hr style="border-top: 1px solid black;">
   <% end %>
 </div>
-<% if user_signed_in? %>
-  <% if current_user.isAdmin? %>
-    <%= link_to "Add new room", new_room_path %>
-  <% end %>
-<% end %>
+<br>

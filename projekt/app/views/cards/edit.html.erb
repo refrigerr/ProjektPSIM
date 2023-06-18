@@ -4,7 +4,7 @@
 
 <br>
 
-<div>
-  <%= link_to "Show this card", @card %> |
-  <%= link_to "Back to cards", cards_path %>
+<div class="btn-group">
+    <%= button_to "Show this card", @card, method: :get, class: "btn btn-primary rounded mr-2" %>
+    <%= button_to "Back to cards", cards_path, method: :get, class: "btn btn-primary rounded mr-2" %>
 </div>

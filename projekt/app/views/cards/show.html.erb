@@ -4,52 +4,94 @@
 
 <div>
   <% if current_user.isAdmin? %>
-    <%= link_to "Edit this card", edit_card_path(@card) %>
-    <%= button_to "Destroy this card", @card, method: :delete %>
+    <div class="btn-group">
+      <%= link_to "Edit this card", edit_card_path(@card), class: "btn btn-primary rounded mr-2" %>
+      <%= button_to "Destroy this card", @card, method: :delete, class: "btn btn-danger" %>
+    </div>
   <% end %>
-  <table class="table">
-    <thead>
+  <br>
+  <br>
+  <% if current_user.isAdmin? %>
+    <p class="lead">Add new room:</p>
+    <%= form_with model: @room do |form| %>
+      <div class="form-select-sm">
+        <%= form.select :room_id, options_for_select(@rooms.map { |room| [room.name, room.id] }, @room_id), { prompt: "Select a Room" }, class: "form-select" %>
+      </div>
+      <br>
+      <div class="actions">
+        <%= form.submit "Add Room", class: "btn btn-success rounded mr-2"%>
+      </div>
+      <br>
+    <% end %>
+  <% end %>
+  <h5 class="h5">User access to rooms</h5>
+  <table class="table table-striped table-full-width">
+    <thead class="table-dark">
       <tr>
-        <th scope="col">Nazwa pokoju</th>
+        <th scope="col">Room name</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
-      <% @card.rooms.each do |room| %>
-        <tr>
-          <td><%= room.name %></td>
-          <% if current_user.isAdmin? %>
-            <td><%= button_to "Unassign Room", unassign_room_card_path(@card, room), method: :post %></td>
-          <% end %>
-        </tr>
+      <% @card.rooms.each_with_index do |room, index| %>
+        <% if index < 3 %>
+          <tr>
+            <td><%= room.name %></td>
+            <% if current_user.isAdmin? %>
+              <td><%= button_to "Unassign Room", unassign_room_card_path(@card, room), method: :post, class: "btn btn-danger" %></td>
+            <% end %>
+          </tr>
+        <% else %>
+          <tr class="collapse" id="additional-rows-2">
+            <td><%= room.name %></td>
+            <% if current_user.isAdmin? %>
+              <td><%= button_to "Unassign Room", unassign_room_card_path(@card, room), method: :post, class: "btn btn-danger" %></td>
+            <% end %>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>
-   <table class="table">
-    <thead>
+  <% if @card.rooms.size > 3 %>
+    <div class="text-left">
+      <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#additional-rows-2" aria-expanded="false" aria-controls="additional-rows-2">
+        Show More/Less
+      </button>
+    </div>
+    <br>
+  <% end %>
+
+  <h5 class="h5">Card logs</h5>
+   <table class="table table-striped table-full-width">
+    <thead class="table-dark">
       <tr>
-        <th scope="col">Pokój</th>
-        <th scope="col">Kiedy otwarto</th>
+        <th scope="col">Room</th>
+        <th scope="col">Last time opened at</th>
       </tr>
       
     </thead>
     <tbody>
-      <% @card.usage_histories.each do |usage_history| %>
-        <tr>
-          <td><%= usage_history.room.name %></td>
-          <td><%= usage_history.created_at %></td>
-        </tr>
+      <% @card.usage_histories.each.with_index do |usage_history, index| %>
+        <% if index < 3 %>
+          <tr>
+            <td><%= usage_history.room.name %></td>
+            <td><%= usage_history.created_at %></td>
+          </tr>
+        <% else %>
+          <tr class="collapse" id="additional-rows">
+            <td><%= usage_history.room.name %></td>
+            <td><%= usage_history.created_at %></td>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>
-  <% if current_user.isAdmin? %>
-    Add new Room:
-    <%= form_with model: @room do |form| %>
-      <div class="field">
-        <%= form.select :room_id, options_for_select(@rooms.map { |room| [room.name, room.id] }, @room_id), prompt: "Select a Room" %>
-      </div>
-      <div class="actions">
-        <%= form.submit "Add Room" %>
-      </div>
-    <% end %>
+  <% if @card.usage_histories.size > 3 %>
+    <div class="text-left">
+      <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#additional-rows" aria-expanded="false" aria-controls="additional-rows">
+        Show More/Less
+      </button>
+    </div>
+    <br>
   <% end %>
 </div>

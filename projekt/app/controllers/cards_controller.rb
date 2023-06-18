@@ -1,5 +1,6 @@
 class CardsController < ApplicationController
   before_action :authenticate_user!, only: %i[ show edit update destroy ]
+  before_action :check_admin, only: [:index]
 
   # GET /cards or /cards.json
   def index
@@ -36,8 +37,20 @@ class CardsController < ApplicationController
 
   # GET /cards/1 or /cards/1.json
   def show
-    @card = Card.find(params[:id])
+    @card = Card.find_by_id(params[:id])
     @rooms = Room.all
+    if @card.nil?
+        redirect_to root_path, alert: "You don't have permission to access this card."
+    else
+        @rooms = Room.all
+        if current_user.isAdmin
+        else
+            if @card.present? && @card.user == current_user
+            else
+              redirect_to root_path, alert: "You don't have permission to access this card."
+            end
+        end
+    end
   end
 
   # GET /cards/new
@@ -48,6 +61,10 @@ class CardsController < ApplicationController
   # GET /cards/1/edit
   def edit
     @card = Card.find(params[:id])
+    if @card.present? && current_user.isAdmin
+    else
+      redirect_to root_path, alert: "You don't have permission to access this card."
+    end
   end
 
   # POST /cards or /cards.json
@@ -99,6 +116,12 @@ class CardsController < ApplicationController
       redirect_to @card, notice: 'Room unassigned successfully.'
     else
       redirect_to @card, notice: ':(.'
+    end
+  end
+
+  def check_admin
+    unless current_user.isAdmin
+      redirect_to root_path
     end
   end
 

@@ -3,16 +3,19 @@ class UsageHistoriesController < ApplicationController
 
   # GET /usage_histories or /usage_histories.json
   def index
-    @usage_histories = UsageHistory.all
+    if current_user.isAdmin
+      @usage_histories = UsageHistory.all
+    else
+      redirect_to root_path
+    end
   end
 
   # GET /usage_histories/1 or /usage_histories/1.json
   def show
-  end
-
-  # GET /usage_histories/new
-  def new
-    @usage_history = UsageHistory.new
+    if @card.present? && @card.user == current_user
+    else
+       redirect_to root_path, alert: "You don't have permission to access this card."
+    end
   end
 
   # GET /usage_histories/1/edit
