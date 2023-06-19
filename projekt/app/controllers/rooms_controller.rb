@@ -1,5 +1,6 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_admin, only: [:new, :edit, :create, :update, :destroy]
 
   # GET /rooms or /rooms.json
   def index
@@ -18,7 +19,7 @@ class RoomsController < ApplicationController
       user = current_user
       card = current_user.card
       
-      if user.isAdmin? || (card.rooms.exists?(@room.id) && card.status?)
+      if user.isAdmin? || (card.rooms.exists?(@room.id) && card.status? && !card.lost?)
         usage_history = UsageHistory.new(card: card, room: @room)
         usage_history.save
 
@@ -36,19 +37,11 @@ class RoomsController < ApplicationController
 
   # GET /rooms/new
   def new
-    if current_user.isAdmin
-    else
-      redirect_to root_path
-    end
     @room = Room.new
   end
 
   # GET /rooms/1/edit
   def edit
-    if current_user.isAdmin
-    else
-      redirect_to root_path
-    end
     @room = Room.find(params[:id])
   end
 
@@ -98,6 +91,12 @@ class RoomsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def room_params
-      params.require(:room).permit(:name)
+      params.require(:room).permit(:name, :description)
     end
+
+    def check_admin
+      unless current_user.isAdmin
+        redirect_to root_path
+    end
+  end
 end

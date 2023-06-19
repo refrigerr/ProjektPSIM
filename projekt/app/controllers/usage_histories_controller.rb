@@ -1,5 +1,6 @@
 class UsageHistoriesController < ApplicationController
   before_action :set_usage_history, only: %i[ show edit update destroy ]
+  before_action :check_admin, only: [:edit, :create, :update, :destroy]
 
   # GET /usage_histories or /usage_histories.json
   def index
@@ -70,4 +71,10 @@ class UsageHistoriesController < ApplicationController
     def usage_history_params
       params.require(:usage_history).permit(:when_used)
     end
+
+    def check_admin
+    unless current_user.isAdmin
+      redirect_to root_path
+    end
+  end
 end

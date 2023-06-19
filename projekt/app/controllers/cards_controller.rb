@@ -1,6 +1,6 @@
 class CardsController < ApplicationController
   before_action :authenticate_user!, only: %i[ show edit update destroy ]
-  before_action :check_admin, only: [:index]
+  before_action :check_admin, only: [:index, :add_room, :new, :edit, :create, :destroy, :unassign_room]
 
   # GET /cards or /cards.json
   def index
@@ -61,7 +61,7 @@ class CardsController < ApplicationController
   # GET /cards/1/edit
   def edit
     @card = Card.find(params[:id])
-    if @card.present? && current_user.isAdmin
+    if @card.present?
     else
       redirect_to root_path
     end
@@ -84,11 +84,13 @@ class CardsController < ApplicationController
 
   # PATCH/PUT /cards/1 or /cards/1.json
   def update
+    @user = current_user
+    @card = Card.find(params[:id])
+
     respond_to do |format|
     @card = Card.find(params[:id])
       if @card.update(card_params)
-        format.html { redirect_to card_url(@card), notice: "Card was successfully updated." }
-        format.json { render :show, status: :ok, location: @card }
+        
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @card.errors, status: :unprocessable_entity }
@@ -109,19 +111,12 @@ class CardsController < ApplicationController
   def unassign_room
     @card = Card.find(params[:id])
     @room = @card.rooms.find(params[:room_id])
-    @room.card_id = nil
     # Remove the association from the card
     @card.rooms.delete(@room)
     if @room.save && @card.save
       redirect_to @card, notice: 'Room unassigned successfully.'
     else
       redirect_to @card, notice: ':(.'
-    end
-  end
-
-  def check_admin
-    unless current_user.isAdmin
-      redirect_to root_path
     end
   end
 
@@ -133,6 +128,12 @@ class CardsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def card_params
-      params.require(:card).permit(:status)
+      params.require(:card).permit(:status, :lost)
     end
+
+    def check_admin
+      unless current_user.isAdmin
+        redirect_to root_path
+    end
+  end
 end

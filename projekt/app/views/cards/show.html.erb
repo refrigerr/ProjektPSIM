@@ -6,11 +6,8 @@
   <% if current_user.isAdmin? %>
     <div class="btn-group">
       <%= link_to "Edit this card", edit_card_path(@card), class: "btn btn-primary rounded mr-2" %>
-      <%= button_to "Destroy this card", @card, method: :delete, class: "btn btn-danger" %>
     </div>
   <% end %>
-  <br>
-  <br>
   <% if current_user.isAdmin? %>
     <p class="lead">Add new room:</p>
     <%= form_with model: @room do |form| %>
@@ -24,6 +21,15 @@
       <br>
     <% end %>
   <% end %>
+  <% if not current_user.isAdmin %>
+    <%= form_for([@user, @card], url: update_user_card_path(user_id: current_user.id, id: @card.id), method: :patch) do |f| %>
+      <%= f.hidden_field :lost, value: true %>
+      <% if @card.lost == false %>
+        <%= f.submit 'I lost my card', class: "btn btn-danger rounded mr-2" %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <br>
   <h5 class="h5">User access to rooms</h5>
   <table class="table table-striped table-full-width">
     <thead class="table-dark">

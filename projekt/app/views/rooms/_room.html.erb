@@ -1,7 +1,13 @@
 <div id="<%= dom_id room %>">
   <p>
-    <strong>Nazwa pokoju:</strong>
+    <strong>Room name:</strong>
     <%= room.name %>
+    <% if request.path =~ /\/rooms\/\d+/ %>
+      <div>
+        <strong>Room description:</strong>
+        <%= room.description %>
+      </div>
+    <% end %>
   </p>
 
 </div>

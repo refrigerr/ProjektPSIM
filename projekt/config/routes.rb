@@ -11,9 +11,11 @@ Rails.application.routes.draw do
   devise_scope :user do  
    get '/users/sign_out' => 'devise/sessions#destroy'     
   end
+
   resources :users do
-      resources :cards
+      resources :cards, expect: [:update]
   end
+  patch 'users/:user_id/cards/:id', to: 'cards#update', as: 'update_user_card'
 
   resources :cards do
     member do
@@ -22,8 +24,6 @@ Rails.application.routes.draw do
   end
 
   root 'pages#index'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  get '/pages/show', to: 'pages#show', as: 'pages_show'
+  patch '/pages/show', to: 'cards#update', as: 'pages_update'
 end

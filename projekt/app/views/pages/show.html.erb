@@ -1,0 +1,11 @@
+<h1>Missing Cards:</h1>
+<% @cards.each do |card| %>
+  <p>
+    <strong>User e-mail:</strong>
+    <%= card.user.email %>
+    <%= form_with(model: card, url: pages_update_path(id: card.id), method: :patch) do |f| %>
+      <%= f.hidden_field :lost, value: false %>
+      <%= f.submit "Restore Card", class: "btn btn-success rounded mr-2" %>
+    <% end %>
+  </p>
+<% end %>
